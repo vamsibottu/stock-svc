@@ -66,7 +66,7 @@ func (s *stocks) GetStocks(symbols, exchanges string) (map[string][]models.Stock
 	}
 
 	if res.StatusCode != http.StatusOK {
-		return nil, errors.New("failed to retrive stock details")
+		return nil, errors.New("failed to retrieve stock details")
 	}
 
 	defer res.Body.Close()
@@ -86,7 +86,8 @@ func (s *stocks) GetStocks(symbols, exchanges string) (map[string][]models.Stock
 			if strings.Contains(exchanges, sd.StockExchangeShort) {
 				ex = sd.StockExchangeShort
 			}
-			stockDeatils := models.StockDetails{
+			// format the response
+			stockDetails := models.StockDetails{
 				Symbol:         sd.Symbol,
 				Name:           sd.Name,
 				Price:          sd.Price,
@@ -98,7 +99,8 @@ func (s *stocks) GetStocks(symbols, exchanges string) (map[string][]models.Stock
 				GmtOffset:      sd.GmtOffset,
 				LastTradeTime:  sd.LastTradeTime,
 			}
-			stocks[ex] = append(stocks[ex], stockDeatils)
+			// append details to map
+			stocks[ex] = append(stocks[ex], stockDetails)
 		}
 	}
 	return stocks, nil

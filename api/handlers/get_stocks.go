@@ -36,12 +36,12 @@ func StocksHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "error initiating stock service")
 	}
 
-	stockedetails, err := stocksvc.GetStocks(symbols, exchanges)
+	stockdetails, err := stocksvc.GetStocks(symbols, exchanges)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	resp, err := json.Marshal(stockedetails)
+	resp, err := json.Marshal(stockdetails)
 	if err != nil {
 		fmt.Fprintln(w, err.Error())
 	}
