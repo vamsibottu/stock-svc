@@ -29,21 +29,25 @@ func StocksHandler(w http.ResponseWriter, r *http.Request) {
 
 	if len(symbols) < 3 {
 		http.Error(w, fmt.Sprintln("invalid symbol"), http.StatusBadRequest)
+		return
 	}
 
 	stocksvc, err := NewStock()
 	if err != nil {
 		fmt.Fprintln(w, "error initiating stock service")
+		return
 	}
 
 	stockdetails, err := stocksvc.GetStocks(symbols, exchanges)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	resp, err := json.Marshal(stockdetails)
 	if err != nil {
 		fmt.Fprintln(w, err.Error())
+		return
 	}
 
 	fmt.Fprintln(w, string(resp))
